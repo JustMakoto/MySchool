@@ -15,7 +15,6 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String login;
-    private String status;
     private String salts;
     private String password;
     @OneToOne
@@ -24,9 +23,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, String status, String salts, String password, Person person) {
+    public User(String login, String salts, String password, Person person) {
         this.login = login;
-        this.status = status;
         this.salts = salts;
         this.password = password;
         this.person = person;
@@ -46,14 +44,6 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getSalts() {
@@ -85,7 +75,6 @@ public class User {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.id);
         hash = 47 * hash + Objects.hashCode(this.login);
-        hash = 47 * hash + Objects.hashCode(this.status);
         hash = 47 * hash + Objects.hashCode(this.salts);
         hash = 47 * hash + Objects.hashCode(this.password);
         hash = 47 * hash + Objects.hashCode(this.person);
@@ -107,9 +96,6 @@ public class User {
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
-        if (!Objects.equals(this.status, other.status)) {
-            return false;
-        }
         if (!Objects.equals(this.salts, other.salts)) {
             return false;
         }
@@ -127,7 +113,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", status=" + status + ", salts=" + salts + ", password=" + password + ", person=" + person + '}';
+        return "User{" + "id=" + id + ", login=" + login + ", salts=" + salts + ", password=" + password + ", person=" + person + '}';
     }
     
 }

@@ -4,11 +4,15 @@ import entity.Person;
 import entity.Subject;
 import entity.Grade;
 import entity.History;
+import entity.Roles;
 import entity.User;
+import entity.UserRoles;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +24,11 @@ import session.PersonFacade;
 import session.SubjectFacade;
 import session.GradeFacade;
 import session.HistoryFacade;
+import session.RolesFacade;
 import session.UserFacade;
+import session.UserRolesFacade;
 import util.EncriptPass;
+import util.RoleManager;
 
 @WebServlet(name = "LoginController", urlPatterns = {
     "/showLogin",
@@ -43,6 +50,48 @@ public class LoginController extends HttpServlet {
     HistoryFacade historyFacade;
     @EJB
     UserFacade userFacade;
+    @EJB 
+    RolesFacade rolesFacade;
+    @EJB
+    UserRolesFacade userRolesFacade;
+    
+    @Override
+    public void init() throws ServletException {
+        
+        List<User> listUsers = null;
+        try {
+            listUsers = userFacade.findAll();
+        } catch (Exception e) {
+            listUsers= new ArrayList<>();
+        }
+        
+        if(listUsers != null && !listUsers.isEmpty()) return;
+        Person person = new Person(null, "Ivan Ivanoff");
+        personFacade.create(person);
+        EncriptPass ep = new EncriptPass();
+        String salts = ep.createSalts();
+        String password = ep.setEncriptPass("123", salts);
+        User user = new User("admin", salts, password, person);
+        userFacade.create(user);
+        UserRoles userRoles = new UserRoles();
+        userRoles.setUser(user);
+        
+        Roles role = new Roles();
+        
+        role.setRole("ADMIN");
+        rolesFacade.create(role);
+        userRoles.setRole(role);
+        userRolesFacade.create(userRoles);
+        role.setRole("MANAGER");
+        rolesFacade.create(role);
+        userRoles.setRole(role);
+        userRolesFacade.create(userRoles);
+        role.setRole("USER");
+        rolesFacade.create(role);
+        userRoles.setRole(role);
+        userRolesFacade.create(userRoles);
+        
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,13 +111,13 @@ public class LoginController extends HttpServlet {
                 if (user == null) {
                     request.setAttribute("info", "Неправильный логин или пароль");
                     request.getRequestDispatcher("/showLogin.jsp")
-                            .forward(request, response);
+                        .forward(request, response);
                 }
                 password = ep.setEncriptPass(password, user.getSalts());
                 if (!password.equals(user.getPassword())) {
                     request.setAttribute("info", "Неправильный логин или пароль");
                     request.getRequestDispatcher("/showLogin.jsp")
-                            .forward(request, response);
+                        .forward(request, response);
                 }
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", user);
@@ -89,27 +138,25 @@ public class LoginController extends HttpServlet {
                 break;
             case "/addPerson":
                 String namePerson = request.getParameter("name");
-                String status = request.getParameter("status");
                 login = request.getParameter("login");
                 String password1 = request.getParameter("password1");
                 String password2 = request.getParameter("password2");
                 if (!(password1 != null && password1.equals(password2))) {
                     request.setAttribute("info",
-                            "Пользователя добавить не удалось (не корректные данные");
+                        "Пользователя добавить не удалось (некорректные данные");
                     request.getRequestDispatcher("/newPerson.jsp").forward(request, response);
                     break;
                 }
                 Person person = null;
                 try {
                     if (!"".equals(namePerson) && namePerson != null
-                            && !"".equals(status) && status != null
                             && !"".equals(login) && login != null
                             && !"".equals(password1) && password1 != null) {
                         person = new Person(null, namePerson);
                         personFacade.create(person);
                         String salts = ep.createSalts();
                         password = ep.setEncriptPass(password1, salts);
-                        user = new User(login, status, salts, password, person);
+                        user = new User(login, salts, password, person);
                         try {
                             userFacade.create(user);
                         } catch (Exception e) {
@@ -120,7 +167,7 @@ public class LoginController extends HttpServlet {
                         );
                     } else {
                         request.setAttribute("info",
-                                "Пользователя добавить не удалось (некорректные данные)");
+                            "Пользователя добавить не удалось (некорректные данные)");
                         request.getRequestDispatcher("/newPerson.jsp").forward(request, response);
                         break;
                     }

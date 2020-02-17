@@ -4,11 +4,15 @@ import entity.Person;
 import entity.Subject;
 import entity.Grade;
 import entity.History;
+import entity.Roles;
 import entity.User;
+import entity.UserRoles;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +24,11 @@ import session.PersonFacade;
 import session.SubjectFacade;
 import session.GradeFacade;
 import session.HistoryFacade;
+import session.RolesFacade;
 import session.UserFacade;
+import session.UserRolesFacade;
 import util.EncriptPass;
+import util.RoleManager;
 
 @WebServlet(name = "AdminController", urlPatterns = {
     "/editPerson",
@@ -50,7 +57,11 @@ public class AdminController extends HttpServlet {
     HistoryFacade historyFacade;
     @EJB
     UserFacade userFacade;
-
+    @EJB 
+    RolesFacade rolesFacade;
+    @EJB
+    UserRolesFacade userRolesFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -58,7 +69,7 @@ public class AdminController extends HttpServlet {
         String path = request.getServletPath();
         HttpSession session = request.getSession(false);
         if (null == session) {
-            request.setAttribute("info", "У вас нет прав доступа!");
+            request.setAttribute("info", "У вас нет прав доступа, войдите в систему!");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return;
         }
@@ -68,12 +79,13 @@ public class AdminController extends HttpServlet {
             return;
         }
         User user = (User) session.getAttribute("user");
-        if (!"admin".equals(user.getLogin())) {
+        RoleManager rm = new RoleManager();
+        if(!rm.isRoleUser("MANAGER", user)){
             request.setAttribute("info", "У вас нет прав доступа!");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
-            return;
+            return; 
         }
-        request.setAttribute("user", user);
+        request.setAttribute("userRole", rm.getTopRoleName(user));
         switch (path) {
             case "/newSubject":
                 request.getRequestDispatcher("/newSubject.jsp").forward(request, response);
@@ -110,13 +122,12 @@ public class AdminController extends HttpServlet {
             case "/changePerson":
                 String objectColumn1 = request.getParameter("id");
                 String objectColumn2 = request.getParameter("name");
-                String status = request.getParameter("status");
                 String login = request.getParameter("login");
                 String password1 = request.getParameter("password1");
                 String password2 = request.getParameter("password2");
                 if (!(password1 != null && password1.equals(password2))) {
                     request.setAttribute("info",
-                            "Пользователя добавить не удалось (не корректные данные");
+                            "Пользователя добавить не удалось (некорректные данные");
                     request.getRequestDispatcher("/newPerson.jsp").forward(request, response);
                     break;
                 }
@@ -127,7 +138,6 @@ public class AdminController extends HttpServlet {
                 EncriptPass ep = new EncriptPass();
                 String salts = ep.createSalts();
                 String password = ep.setEncriptPass(password1, salts);
-                userId.setStatus(status);
                 userId.setLogin(login);
                 userId.setPassword(password);
                 userFacade.edit(userId);
@@ -181,6 +191,39 @@ public class AdminController extends HttpServlet {
                 List<Grade> listGrades = gradeFacade.findAll();
                 request.setAttribute("listGrades", listGrades);
                 request.getRequestDispatcher("/listGrades.jsp").forward(request, response);
+                break;
+            case "/showAdmin":
+                List<User> listUsers = userFacade.findAll();
+                List<Roles> listRoles = rolesFacade.findAll();
+                Map<User,String> mapUsers = new HashMap<>();
+                listUsers.forEach((u) -> {
+                    if(!"admin".equals(u.getLogin())){
+                        mapUsers.put(u,rm.getTopRoleName(u));
+                    }
+                });
+                request.setAttribute("listRoles", listRoles);
+                request.setAttribute("mapUsers", mapUsers);
+                request.getRequestDispatcher("/WEB-INF/showAdmin.jsp")
+                        .forward(request, response);
+                break;
+            case "/changeRole":
+                String roleID = request.getParameter("roleId");
+                String userID = request.getParameter("userId");
+                if(roleID == null || "#".equals(roleID) 
+                        || userID == null || "#".equals(userID)){
+                    request.setAttribute("info", "Не выбран пользователь или роль");
+                    request.getRequestDispatcher("/showAdmin")
+                        .forward(request, response);
+                    break;
+                }
+                Roles role = rolesFacade.find(Long.parseLong(roleID));
+                user = userFacade.find(Long.parseLong(userID));
+                rm.setRoleUser(role,user);
+                request.setAttribute("info", 
+                        "Роль пользователя \""+user.getLogin()
+                                +"\" изменена на \""+role.getRole()+"\"");
+                request.getRequestDispatcher("/showAdmin")
+                        .forward(request, response);
                 break;
         }
     }

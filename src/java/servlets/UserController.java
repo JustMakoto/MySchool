@@ -4,11 +4,15 @@ import entity.Person;
 import entity.Subject;
 import entity.Grade;
 import entity.History;
+import entity.Roles;
 import entity.User;
+import entity.UserRoles;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,20 +24,32 @@ import session.PersonFacade;
 import session.SubjectFacade;
 import session.GradeFacade;
 import session.HistoryFacade;
+import session.RolesFacade;
 import session.UserFacade;
+import session.UserRolesFacade;
 import util.EncriptPass;
-
+import util.RoleManager;
 
 @WebServlet(name = "UserController", urlPatterns = {
     "/listSubjects",
 })
 
 public class UserController extends HttpServlet {
-@EJB PersonFacade personFacade;
-@EJB SubjectFacade subjectFacade;
-@EJB GradeFacade gradeFacade;
-@EJB HistoryFacade historyFacade;
-@EJB UserFacade userFacade;
+
+    @EJB
+    PersonFacade personFacade;
+    @EJB
+    SubjectFacade subjectFacade;
+    @EJB
+    GradeFacade gradeFacade;
+    @EJB
+    HistoryFacade historyFacade;
+    @EJB
+    UserFacade userFacade;
+    @EJB 
+    RolesFacade rolesFacade;
+    @EJB
+    UserRolesFacade userRolesFacade;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,7 +58,7 @@ public class UserController extends HttpServlet {
         String path = request.getServletPath();
         HttpSession session = request.getSession(false);
         if (null == session){
-            request.setAttribute("info", "У вас нет прав доступа!");
+            request.setAttribute("info", "У вас нет прав доступа, войдите в систему!");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return;   
         }
