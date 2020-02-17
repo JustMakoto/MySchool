@@ -13,7 +13,7 @@
         
         <div class="container">
             <div class="row">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary col-12">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark col-12">
                     <a class="navbar-brand" href="index.jsp">MySchool</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -21,35 +21,35 @@
 
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item " id="listSubjects">
-                                <a class="nav-link" href="#">Предметы</a>
+                            <li class="nav-item " id="menu1">
+                                <a class="nav-link" href="listSubjects">Предметы</a>
                             </li>
-                            <li class="nav-item " id="listPersons">
-                                <a class="nav-link" href="#">Ученики</a>
+                            <li class="nav-item " id="menu2">
+                                <a class="nav-link" href="listPersons">Ученики</a>
                             </li>
-                            <li class="nav-item " id="listGrades">
-                                <a class="nav-link" href="#">Оценки</a>
+                            <li class="nav-item " id="menu3">
+                                <a class="nav-link" href="listGrades">Оценки</a>
                             </li>
-                            <li class="nav-item " id="recPerson">
-                                <a class="nav-link" href="#">Оценки ученика</a>
+                            <li class="nav-item " id="menu4">
+                                <a class="nav-link" href="recPerson">Оценки ученика</a>
                             </li>
-                            <li class="nav-item " id="recSubject">
-                                <a class="nav-link" href="#">Оценки по предмету</a>
+                            <li class="nav-item " id="menu5">
+                                <a class="nav-link" href="recSubject">Оценки по предметам</a>
                             </li>
                             <c:if test="${userRole eq null}">
                                 <li class="nav-item" id="showLogin">
-                                    <a class="nav-link" href="#">Вход</a>
+                                    <a class="nav-link" href="showLogin">Вход</a>
                                 </li>
                             </c:if>
                             <c:if test="${userRole ne null}">
                                 <li class="nav-item" id="sysout">
-                                    <a class="nav-link" href="#">Выход</a>
+                                    <a class="nav-link" href="sysout">Выход</a>
                                 </li>
                             </c:if>
                         </ul>
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                            <input class="form-control mr-sm-2" type="text" placeholder="Поиск">
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Найти</button>
                         </form>
                     </div>
                 </nav>
