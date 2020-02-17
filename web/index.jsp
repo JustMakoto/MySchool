@@ -1,15 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>My School</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
-    </head>
-<!--  -->
-    <body>
-        <h1>Сетевая школа</h1>
+ 
+<!--        <h1>Сетевая школа</h1>
         <a href="index.jsp">Главная страница</a><br>
         <p>${info}</p>
         <p>Вошедший пользователь: ${user.login}</p>
@@ -35,6 +27,8 @@
         <a href="newSubject">Добавить новый предмет</a><br>
         <a href="newGrade">Добавить новую оценку</a><br>
         <a href="listPersons">Список персон</a><br>
-        <a href="listGrades">Список оценок</a><br>
-    </body>
-</html>
+        <a href="listGrades">Список оценок</a><br> -->
+
+        <div id="content">
+               
+        </div>

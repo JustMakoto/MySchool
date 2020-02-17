@@ -15,7 +15,6 @@
             <input type="hidden" name="id" value="${person.id}">
             <input type="hidden" name="userId" value="${userId.id}">
             Имя и фамилия: <input type="text" name="name" value="${person.name}"><br>
-            Статус: <input type="text" name="status" value="${userId.status}"><br>
             Логин: <input type="text" name="login" value="${userId.login}"><br>
             Пароль: <input type="password" name="password1"><br>
             Повторить пароль: <input type="password" name="password2"><br>

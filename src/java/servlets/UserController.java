@@ -8,6 +8,10 @@ import entity.Roles;
 import entity.User;
 import entity.UserRoles;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +33,11 @@ import session.UserFacade;
 import session.UserRolesFacade;
 import util.EncriptPass;
 import util.RoleManager;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 
 @WebServlet(name = "UserController", urlPatterns = {
     "/listSubjects",

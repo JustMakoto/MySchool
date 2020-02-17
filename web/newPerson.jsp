@@ -14,7 +14,6 @@
         <form action="addPerson" method="POST">
             Имя и фамилия: <input type="text" name="name"><br>
             Логин: <input type="text" name="login"><br>
-            Статус: <input type="text" name="status"><br>
             Пароль: <input type="password" name="password1"><br>
             Повторить пароль: <input type="password" name="password2"><br>
             <input type="submit" value="Добавить пользователя">
