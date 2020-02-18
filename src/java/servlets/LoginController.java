@@ -37,9 +37,11 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
+import jsonbuilders.SubjectJsonBuilder;
+import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.UserJsonBuilder;
 
-@WebServlet(name = "LoginController", urlPatterns = {
+@WebServlet(name = "LoginController",loadOnStartup = 1, urlPatterns = {
     "/showLogin",
     "/login",
     "/logout",

@@ -22,10 +22,10 @@
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item " id="menu1">
-                                <a class="nav-link" href="listSubjects">Предметы</a>
+                                <a class="nav-link" href="#">Предметы</a>
                             </li>
                             <li class="nav-item " id="menu2">
-                                <a class="nav-link" href="listPersons">Ученики</a>
+                                <a class="nav-link" href="#">Ученики</a>
                             </li>
                             <li class="nav-item " id="menu3">
                                 <a class="nav-link" href="listGrades">Оценки</a>

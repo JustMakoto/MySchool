@@ -10,7 +10,7 @@ public class SubjectJsonBuilder {
         JsonObjectBuilder job = Json.createObjectBuilder();
         job.add("id", subject.getId())
           .add("name", subject.getName())
-          .add("author", subject.getTeacher());
+          .add("teacher", subject.getTeacher());
         return job.build();
     } 
 }

@@ -38,9 +38,13 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import jsonbuilders.SubjectJsonBuilder;
+import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.UserJsonBuilder;
 
 @WebServlet(name = "UserController", urlPatterns = {
     "/listSubjects",
+    "/listSubjectsJson",
 })
 
 public class UserController extends HttpServlet {
@@ -85,6 +89,22 @@ public class UserController extends HttpServlet {
                 List<Subject> listSubjects = subjectFacade.findAll();
                 request.setAttribute("listSubjects", listSubjects);
                 request.getRequestDispatcher("/listSubjects.jsp").forward(request, response);
+                break;
+            case "/listSubjectsJson":
+                listSubjects = subjectFacade.findAll();
+                SubjectJsonBuilder subjectJsonBuilder = new SubjectJsonBuilder();
+                JsonArrayBuilder jab = Json.createArrayBuilder();
+                for(Subject s : listSubjects){
+                    jab.add(subjectJsonBuilder.createJsonSubject(s));
+                }
+                String json = "";
+                try (Writer writer = new StringWriter()){
+                    Json.createWriter(writer).write(jab.build());
+                    json = writer.toString();
+                }
+                try (PrintWriter out = response.getWriter()) {
+                  out.println(json);        
+                }
                 break;
         }        
 

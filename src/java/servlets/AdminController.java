@@ -38,6 +38,9 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import jsonbuilders.SubjectJsonBuilder;
+import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.UserJsonBuilder;
 
 @WebServlet(name = "AdminController", urlPatterns = {
     "/editPerson",
@@ -52,6 +55,7 @@ import javax.json.JsonReader;
     "/changeGrade",
     "/listPersons",
     "/listGrades",
+    "/listPersonsJson",
 })
 
 public class AdminController extends HttpServlet {
@@ -233,6 +237,22 @@ public class AdminController extends HttpServlet {
                                 +"\" изменена на \""+role.getRole()+"\"");
                 request.getRequestDispatcher("/showAdmin")
                         .forward(request, response);
+                break;
+            case "/listPersonsJson":
+                listPersons = personFacade.findAll();
+                PersonJsonBuilder personJsonBuilder = new PersonJsonBuilder();
+                JsonArrayBuilder jab = Json.createArrayBuilder();
+                for(Person p : listPersons){
+                  jab.add(personJsonBuilder.createJsonPerson(p));
+                }
+                String json = "";
+                try (Writer writer = new StringWriter()){
+                    Json.createWriter(writer).write(jab.build());
+                    json = writer.toString();
+                }
+                try (PrintWriter out = response.getWriter()) {
+                  out.println(json);        
+                }
                 break;
         }
     }
