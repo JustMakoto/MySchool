@@ -40,7 +40,9 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import jsonbuilders.SubjectJsonBuilder;
 import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.GradeJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
+import util.JsonResponse;
 
 @WebServlet(name = "UserController", urlPatterns = {
     "/listSubjects",
@@ -94,16 +96,13 @@ public class UserController extends HttpServlet {
                 listSubjects = subjectFacade.findAll();
                 SubjectJsonBuilder subjectJsonBuilder = new SubjectJsonBuilder();
                 JsonArrayBuilder jab = Json.createArrayBuilder();
-                for(Subject s : listSubjects){
+                for(Subject s : listSubjects) {
                     jab.add(subjectJsonBuilder.createJsonSubject(s));
                 }
-                String json = "";
-                try (Writer writer = new StringWriter()){
-                    Json.createWriter(writer).write(jab.build());
-                    json = writer.toString();
-                }
+                JsonResponse jr = new JsonResponse();
+                String json = jr.getJsonResponse(session, jab.build());
                 try (PrintWriter out = response.getWriter()) {
-                  out.println(json);        
+                    out.println(json);        
                 }
                 break;
         }        

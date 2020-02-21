@@ -37,9 +37,12 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import jsonbuilders.SubjectJsonBuilder;
 import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.GradeJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
+import util.JsonResponse;
 
 @WebServlet(name = "LoginController",loadOnStartup = 1, urlPatterns = {
     "/showLogin",
@@ -108,6 +111,10 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        HttpSession session  = request.getSession();
+        String json = "";
+        JsonObjectBuilder job = Json.createObjectBuilder();
+        JsonResponse jsonResponse = new JsonResponse();
         EncriptPass ep = new EncriptPass();
         String path = request.getServletPath();
         switch (path) {
@@ -130,11 +137,30 @@ public class LoginController extends HttpServlet {
                     request.getRequestDispatcher("/showLogin.jsp")
                         .forward(request, response);
                 }
-                HttpSession session = request.getSession(true);
+                session = request.getSession(true);
                 session.setAttribute("user", user);
                 request.setAttribute("info", "Вы вошли в систему как " + login);
                 request.getRequestDispatcher("/index.jsp")
                         .forward(request, response);
+                break;
+            case "/loginJson":
+                JsonReader jsonReader = Json.createReader(request.getReader()); // Этот reader из Javax, генерируется
+                JsonObject jsonObject = jsonReader.readObject();
+                login = jsonObject.getString("login","");
+                password = jsonObject.getString("password","");
+                user = userFacade.findByLogin(login);
+                if(user == null){
+                  json = jsonResponse.getJsonResponse(session);
+                  break;
+                }
+                password = ep.setEncriptPass(password,user.getSalts());
+                if(!password.equals(user.getPassword())){
+                  json = jsonResponse.getJsonResponse(session);
+                  break;
+                }
+                session = request.getSession(true);
+                session.setAttribute("user", user);
+                json = jsonResponse.getJsonResponse(session);
                 break;
             case "/logout":
                 session = request.getSession(false);
@@ -143,6 +169,13 @@ public class LoginController extends HttpServlet {
                 }
                 request.setAttribute("info", "Вы вышли из системы");
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
+                break;
+            case "/logoutJson":
+                session = request.getSession(false);
+                if(null != session){
+                    session.invalidate();
+                }
+                json = jsonResponse.getJsonResponse(session);
                 break;
             case "/newPerson":
                 request.getRequestDispatcher("/newPerson.jsp").forward(request, response);

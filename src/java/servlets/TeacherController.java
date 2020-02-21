@@ -38,6 +38,11 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import jsonbuilders.SubjectJsonBuilder;
+import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.GradeJsonBuilder;
+import jsonbuilders.UserJsonBuilder;
+import util.JsonResponse;
 
 @WebServlet(name = "TeacherController", urlPatterns = {
     "/addRecord",

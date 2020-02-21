@@ -40,7 +40,9 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import jsonbuilders.SubjectJsonBuilder;
 import jsonbuilders.PersonJsonBuilder;
+import jsonbuilders.GradeJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
+import util.JsonResponse;
 
 @WebServlet(name = "AdminController", urlPatterns = {
     "/editPerson",
@@ -56,6 +58,7 @@ import jsonbuilders.UserJsonBuilder;
     "/listPersons",
     "/listGrades",
     "/listPersonsJson",
+    "/listGradesJson",
 })
 
 public class AdminController extends HttpServlet {
@@ -234,7 +237,7 @@ public class AdminController extends HttpServlet {
                 rm.setRoleUser(role,user);
                 request.setAttribute("info", 
                         "Роль пользователя \""+user.getLogin()
-                                +"\" изменена на \""+role.getRole()+"\"");
+                        +"\" изменена на \""+role.getRole()+"\"");
                 request.getRequestDispatcher("/showAdmin")
                         .forward(request, response);
                 break;
@@ -242,16 +245,26 @@ public class AdminController extends HttpServlet {
                 listPersons = personFacade.findAll();
                 PersonJsonBuilder personJsonBuilder = new PersonJsonBuilder();
                 JsonArrayBuilder jab = Json.createArrayBuilder();
-                for(Person p : listPersons){
-                  jab.add(personJsonBuilder.createJsonPerson(p));
+                for(Person p : listPersons) {
+                    jab.add(personJsonBuilder.createJsonPerson(p));
                 }
-                String json = "";
-                try (Writer writer = new StringWriter()){
-                    Json.createWriter(writer).write(jab.build());
-                    json = writer.toString();
-                }
+                JsonResponse jr = new JsonResponse();
+                String json = jr.getJsonResponse(session, jab.build());
                 try (PrintWriter out = response.getWriter()) {
-                  out.println(json);        
+                    out.println(json);        
+                }
+                break;
+            case "/listGradesJson":
+                listGrades = gradeFacade.findAll();
+                GradeJsonBuilder gradeJsonBuilder = new GradeJsonBuilder();
+                jab = Json.createArrayBuilder();
+                for(Grade p : listGrades) {
+                    jab.add(gradeJsonBuilder.createJsonGrade(p));
+                }
+                jr = new JsonResponse();
+                json = jr.getJsonResponse(session, jab.build());
+                try (PrintWriter out = response.getWriter()) {
+                    out.println(json);        
                 }
                 break;
         }
