@@ -82,10 +82,15 @@ public class UserController extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return; 
         }
-        User user = (User) session.getAttribute("user");
+         User user = (User) session.getAttribute("user");
+        RoleManager rm = new RoleManager();
+        if(!rm.isRoleUser("USER", user)){
+            request.setAttribute("info", "У вас нет прав доступа, войдите в систему");
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            return; 
+        }
         Person person = null;
-        request.setAttribute("user", user);
-        
+        request.setAttribute("userRole", rm.getTopRoleName(user));
         switch (path) {
             case "/listSubjects":
                 List<Subject> listSubjects = subjectFacade.findAll();

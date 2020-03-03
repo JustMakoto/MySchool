@@ -18,14 +18,13 @@ function printListSubjects(dataJson) {
     for(let i=0; i<data.length; i++) {
         output += '<div class="card border-primary m-3" style="max-width:10rem;">';
         output += '<div class="card-header">';
-        output += data[i].id;
+        output += data[i].name;
         output += '</div>';
         output += '<div class="card-body">';
         output += '<h4 class="card-title">';
-        output += data[i].name;
         output += '</h4>';
         output += '<p class="card-text">';
-        output += data[i].teacher;
+        output += 'Учитель: '+data[i].teacher;
         output += '</p>';
         output += '</div>';
         output += '</div>';

@@ -16,15 +16,7 @@ function printListPersons(data) {
     for(let i=0; i<data.length; i++) {
         output += '<div class="card border-primary m-3" style="max-width: 30rem;">';
         output += '<div class="card-header">';
-        output += data[i].id;
-        output += '</div>';
-        output += '<div class="card-body">';
-        output += '<h4 class="card-title">';
         output += data[i].name;
-        output += '</h4>';
-        output += '<p class="card-text">';
-        output += data[i].name;
-        output += '</p>';
         output += '</div>';
         output += '</div>';
     }

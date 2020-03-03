@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 18 2020 г., 10:21
--- Версия сервера: 10.1.33-MariaDB
--- Версия PHP: 7.2.6
+-- Время создания: Мар 04 2020 г., 00:21
+-- Версия сервера: 10.1.38-MariaDB
+-- Версия PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- База данных: `myschool`
 --
-CREATE DATABASE IF NOT EXISTS `myschool` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `myschool`;
 
 -- --------------------------------------------------------
 
@@ -66,18 +64,7 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`ID`, `RECORD`, `GRADE_ID`, `PERSON_ID`, `SUBJECT_ID`) VALUES
-(1, '2020-02-18 09:13:30', 2, 2, 1),
-(2, '2020-02-18 09:13:37', 4, 3, 1),
-(3, '2020-02-18 09:13:45', 3, 4, 1),
-(4, '2020-02-18 09:13:57', 2, 2, 2),
-(5, '2020-02-18 09:14:05', 4, 3, 2),
-(6, '2020-02-18 09:14:16', 5, 4, 2),
-(7, '2020-02-18 09:14:23', 3, 2, 3),
-(8, '2020-02-18 09:14:31', 4, 3, 3),
-(9, '2020-02-18 09:14:39', 2, 4, 3),
-(10, '2020-02-18 09:14:49', 4, 2, 4),
-(11, '2020-02-18 09:15:00', 5, 3, 4),
-(12, '2020-02-18 09:15:11', 1, 4, 4);
+(13, '2020-03-03 18:51:05', 5, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -96,9 +83,8 @@ CREATE TABLE `person` (
 
 INSERT INTO `person` (`ID`, `NAME`) VALUES
 (1, 'Ivan Ivanoff'),
-(2, 'Петр Васечкин'),
-(3, 'Вася Пупкин'),
-(4, 'Вова Петров');
+(8, 'mark'),
+(9, 'teacher');
 
 -- --------------------------------------------------------
 
@@ -137,10 +123,10 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`ID`, `NAME`, `TEACHER`) VALUES
-(1, 'Физика', 'Ньютон'),
-(2, 'Химия', 'Менделеев'),
-(3, 'Литература', 'Пушкин'),
-(4, 'Физкультура', 'Шварценеггер');
+(1, 'Физика', 'Fisik'),
+(2, 'Химия', 'Himic'),
+(3, 'Литература', 'Literatura'),
+(4, 'Физкультура', 'Fiskult');
 
 -- --------------------------------------------------------
 
@@ -161,10 +147,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`ID`, `LOGIN`, `PASSWORD`, `SALTS`, `PERSON_ID`) VALUES
-(1, 'admin', '355f7ba002b5cb80858d31cdec700d71aa17045c392fcae12ecb75c2e2715b65', '4430b3a52db235f991c8d5e4f2d707b5', 1),
-(2, 'petr', '4b5453f4371e53362b1b70ae433b6f814d134deecf1cff187315e6a308ad356', '8f9c1c68058c13da3f04dae4c6a87c25', 2),
-(3, 'vasja', 'ee4ea2c15010c36833652426b610ce62325f18c7437a488bc0b9749f33e1e80b', '511becf309556333102132a64ec65d94', 3),
-(4, 'vova', '4c2f9c103eec33be117dc409013b11bb1e4d09207fc78e77309506b3efdad0ad', '44450dd42b4a07ee3562a8eb1c08410e', 4);
+(1, 'admin', '8ee712584fea83c1d0dc363a500eeb90176cde823784916a192e370b04d2c762', '6a55af450dd8bb9e1a19029ac85d28d0', 1),
+(8, 'mark', '626fec8280409587c3351212faf6245d046ea7a5678b2ea44ef720d42ef8f913', '9d7cbcc7a548a546ac9ca1ec9db02e1c', 8),
+(9, 'teacher', '6c082beb7d0fa909df5f65d931b66a23e4180569da0fe19b1719241efef1ef9b', '39ec15af5eb0e6dfa8dcef3674b6586e', 9);
 
 -- --------------------------------------------------------
 
@@ -185,7 +170,10 @@ CREATE TABLE `userroles` (
 INSERT INTO `userroles` (`ID`, `ROLE_ID`, `USER_ID`) VALUES
 (1, 1, 1),
 (2, 2, 1),
-(3, 3, 1);
+(3, 3, 1),
+(4, 2, 9),
+(5, 1, 9),
+(7, 3, 9);
 
 --
 -- Индексы сохранённых таблиц
@@ -255,13 +243,13 @@ ALTER TABLE `grade`
 -- AUTO_INCREMENT для таблицы `history`
 --
 ALTER TABLE `history`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `person`
 --
 ALTER TABLE `person`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `roles`
@@ -279,13 +267,13 @@ ALTER TABLE `subject`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `userroles`
 --
 ALTER TABLE `userroles`
-  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

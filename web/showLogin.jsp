@@ -1,11 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Вход в систему</title>
-    </head>
-    <body>
+
         <form action="login" method="POST" style="margin-top:10px;margin-bottom:50px;">
             <div class="row justify-content-center">
                 <div class="card">
@@ -28,5 +22,4 @@
                 </div>
             </div>
         </form>
-    </body>
-</html>
+

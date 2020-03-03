@@ -97,7 +97,7 @@ public class AdminController extends HttpServlet {
         User user = (User) session.getAttribute("user");
         RoleManager rm = new RoleManager();
         if(!rm.isRoleUser("MANAGER", user)){
-            request.setAttribute("info", "У вас нет прав доступа!");
+            request.setAttribute("info", "У вас нет прав доступа, войдите в систему");
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return; 
         }

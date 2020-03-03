@@ -10,14 +10,14 @@ function printLoginForm() {
         output += '<h3 class="card-title text-center">Аутентификация</h3>';
         output += '<p class="card-text">';
         output += '<div class="form-group">';
-        output += '<label for="login" class="badge badge-secondary">Логин:</label>';
+        output += '<label for="login" class="badge">Логин:</label>';
         output += '<input type="text" name="login" id="login" class="form-control form-control-md">';
         output += '</div>';
         output += '<div class="form-group">';
-        output += '<label for="password" class="badge badge-secondary">Пароль:</label>';
+        output += '<label for="password" class="badge ">Пароль:</label>';
         output += '<input type="password" name="password" id="password" class="form-control form-control-md">';
         output += '</div>';
-        output += '<p class="text-center"><input class="btn btn-secondary" id="loginButton" style="width: 100%;" type="submit" value="Войти"></p>';
+        output += '<p class="text-center"><input class="btn btn-primary" id="loginButton" style="width: 100%;" type="submit" value="Войти"></p>';
         output += '<p class="text-center">Нет учетной записи? <a href="newPerson">Зарегистрироваться</a></p>';
         output += '</p>';
         output += '</div>';

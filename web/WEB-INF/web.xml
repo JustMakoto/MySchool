@@ -11,8 +11,22 @@
     <jsp-config>
         <jsp-property-group>
             <display-name>Template1</display-name>
-            <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/recListSubject.jsp</url-pattern>
+            <url-pattern>/listGrades.jsp</url-pattern>
+            <url-pattern>/newPerson.jsp</url-pattern>
+            <url-pattern>/recListPerson.jsp</url-pattern>
+            <url-pattern>/recPerson.jsp</url-pattern>
             <url-pattern>/showLogin.jsp</url-pattern>
+            <url-pattern>/newSubject.jsp</url-pattern>
+            <url-pattern>/listSubjects.jsp</url-pattern>
+            <url-pattern>/editPerson.jsp</url-pattern>
+            <url-pattern>/editSubject.jsp</url-pattern>
+            <url-pattern>/recSubject.jsp</url-pattern>
+            <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/newGrade.jsp</url-pattern>
+            <url-pattern>/addRecord.jsp</url-pattern>
+            <url-pattern>/listPersons.jsp</url-pattern>
+            <url-pattern>/editGrade.jsp</url-pattern>
             <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
             <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
         </jsp-property-group>
